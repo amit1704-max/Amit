@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Akanksha Sneh ❤️</title>
+    <style>
+        /* Mobile-first design */
+        body { 
+            background-color: #fdf2f8; 
+            font-family: -apple-system, system-ui, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #quiz-card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 25px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            width: 100%; 
+            max-width: 350px; 
+            text-align: center; 
+            border: 1px solid #fee2e2; 
+        }
+        .score-box { background: #ffe4e6; color: #be123c; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 20px; font-weight: bold; }
+        #quiz-image { 
+            width: 100%; 
+            border-radius: 15px; 
+            margin-bottom: 15px; 
+            display: none; 
+            object-fit: cover; 
+            height: 200px; /* Fixed height for mobile stability */
+        }
+        h2 { color: #4b5563; font-size: 1.2rem; margin-bottom: 20px; line-height: 1.4; }
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: 2px solid #f3f4f6; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            background: white; 
+            font-size: 16px; 
+            color: #374151; 
+            font-weight: 500;
+            -webkit-tap-highlight-color: transparent; /* Fixes blue flash on tap */
+        }
+        .btn:active { background: #fff1f2; border-color: #fb7185; }
+        #error-msg { display: none; color: white; background: #e11d48; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="quiz-card">
+    <div class="score-box" id="score-display">Score: 0/3</div>
+    <img id="quiz-image" src="memory.jpg" alt="Our Memory">
+    <h2 id="question-text">Loading...</h2>
+    <div id="options-container"></div>
+    <div id="error-msg">❌ System Error: Akanksha is already Amit's Valentine. Choice not allowed!</div>
+</div>
+
+<script>
+    const questions = [
+        { q: "When did Amit first fall for Akanksha?", options: ["15 September", "28 January", "I don't remember"], correct: 0, showPhoto: false },
+        { q: "Where did we take this beautiful photo?", options: ["Caffe too", "Master chef", "College"], correct: 0, showPhoto: true },
+        { q: "Will you be my Valentine forever?", options: ["Yes, of course! ❤️", "No"], correct: 0, showPhoto: false }
+    ];
+
+    let step = 0;
+    let score = 0;
+
+    function load() {
+        const data = questions[step];
+        document.getElementById("question-text").innerText = data.q;
+        const img = document.getElementById("quiz-image");
+        
+        if(data.showPhoto) {
+            img.style.display = "block";
+        } else {
+            img.style.display = "none";
+        }
+
+        const container = document.getElementById("options-container");
+        container.innerHTML = "";
+        data.options.forEach((opt, i) => {
+            const b = document.createElement("button");
+            b.className = "btn";
+            b.innerText = opt;
+            b.onclick = () => check(i);
+            container.appendChild(b);
+        });
+    }
+
+    function check(i) {
+        const err = document.getElementById("error-msg");
+        err.style.display = "none";
+
+        if (step === 2 && i === 1) { 
+            err.style.display = "block";
+            return;
+        }
+
+        if (i === questions[step].correct) {
+            score++;
+            step++;
+            document.getElementById("score-display").innerText = `Score: ${score}/3`;
+            if (step < 3) load(); else finish();
+        } else {
+            alert("Oops! Think harder, Akanksha! ❤️");
+        }
+    }
+
+    function finish() {
+        document.getElementById("quiz-card").innerHTML = "<h1>Yay! ❤️</h1><p>Amit Rai loves Akanksha Sneh! <br><br>Thanks for being my Valentine!</p>";
+    }
+
+    load();
+</script>
+</body>
+</html>
+
